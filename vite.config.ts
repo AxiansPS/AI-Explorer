@@ -4,8 +4,8 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  base: '/AI-Explorer/',
+export default defineConfig(({ mode, command }) => ({
+  base: command === 'build' && process.env.GITHUB_ACTIONS ? '/AI-Explorer/' : '/',
   server: {
     host: "::",
     port: 8080,
