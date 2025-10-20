@@ -4,16 +4,15 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  base: '/', // Let React Router handle the base path dynamically
+export default defineConfig(({ mode, command }) => ({
+  base: command === 'build' && process.env.GITHUB_ACTIONS ? '/AI-Explorer/' : '/',
   server: {
     host: "::",
     port: 8080,
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
