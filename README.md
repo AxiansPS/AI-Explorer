@@ -62,12 +62,50 @@ This project is built with:
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/efaec6f7-07ce-44cb-9f52-27a297017388) and click on Share -> Publish.
+### Deploy to GitHub Pages (recommended)
 
-## Can I connect a custom domain to my Lovable project?
+This repo is already configured for GitHub Pages.
 
-Yes, you can!
+Prerequisites:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- A GitHub repository with this code pushed
+- Pages enabled (Repository → Settings → Pages → Deploy from: GitHub Actions or gh-pages branch)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Commands (Windows PowerShell or any shell):
+
+```sh
+# Install dependencies
+npm install
+
+# Build for GitHub Pages (outputs to dist-pages/ and sets base to /AI-Explorer/)
+npm run build:pages
+
+# Publish to the gh-pages branch
+npm run deploy
+```
+
+Notes:
+
+- The Vite `base` is set to `/AI-Explorer/` for the `pages` mode in `vite.config.ts`. If your repository name is different, update the `base` value accordingly.
+- The deployment uses the `gh-pages` package and publishes the `dist-pages/` folder to the `gh-pages` branch.
+- After the first deploy, visit your site at `https://<your-username>.github.io/<your-repo>/`.
+
+### Deploy to any static hosting (Netlify, Vercel, Azure Static Web Apps, S3, etc.)
+
+1. Build the production bundle:
+
+```sh
+npm run build
+```
+
+2. Upload the contents of the `dist/` directory to your static host.
+
+3. If the site is served from a subpath, set the correct `base` in `vite.config.ts` or set an environment-specific base during build.
+
+### Local preview of the production build
+
+```sh
+npm run preview
+```
+
+This serves the content from `dist/` locally.

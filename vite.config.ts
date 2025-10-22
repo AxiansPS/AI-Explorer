@@ -5,10 +5,15 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => ({
-  base: command === 'build' && process.env.GITHUB_ACTIONS ? '/AI-Explorer/' : '/',
+  base: mode === 'pages' ? '/AI-Explorer/' : '/',
   server: {
     host: "::",
     port: 8080,
+  },
+  build: {
+    // Use separate outDirs to avoid EBUSY locks on Windows/OneDrive
+    outDir: mode === 'pages' ? 'dist-pages' : 'dist',
+    emptyOutDir: true,
   },
   plugins: [
     react(),

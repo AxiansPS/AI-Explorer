@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:pages": "vite build --mode pages",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview --outDir dist",
+    "predeploy": "npm run build:pages",
+    "deploy": "gh-pages -d dist-pages"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
