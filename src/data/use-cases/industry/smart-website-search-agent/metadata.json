@@ -1,6 +1,7 @@
 {
   "id": "smart-website-search-agent",
   "title": "Smart Website Search Agent",
+  "title_nl": "Slimme Website‑zoekagent",
   "company": "Metaalunie",
   "sector": "Industry",
   "tags": ["knowledge-retrieval"]

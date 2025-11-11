@@ -1,5 +1,6 @@
 {
   "title": "Care Demand Segmentation (Cohorting)",
+  "title_nl": "Zorgvraagsegmentatie (Cohortering)",
   "id": "care-demand-segmentation",
   "sector": "Care",
   "tags": ["segmentation", "decision-making", "machine-learning"]

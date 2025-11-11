@@ -1,6 +1,7 @@
 {
   "id": "route-planning-order-pickers",
   "title": "Optimal Route Planning for Order Pickers",
+  "title_nl": "Optimale Routeplanning voor Orderpickers",
   "sector": "Industry",
   "tags": ["optimize"]
 }

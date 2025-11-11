@@ -1,6 +1,7 @@
 {
   "id": "maintenance-log-analysis",
   "title": "Maintenance Log Analysis & Root-Cause Extraction",
+  "title_nl": "Analyse van Onderhoudslogboeken & Oorzaakanalyse",
   "sector": "Industry",
   "tags": ["text-classification", "summarization-extraction"]
 }

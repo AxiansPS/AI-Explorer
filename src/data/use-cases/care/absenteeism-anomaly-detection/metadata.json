@@ -1,5 +1,6 @@
 {
   "title": "Absenteeism Detection & Early Warning",
+  "title_nl": "Ziekteverzuimdetectie & Vroege Waarschuwing",
   "id": "care-absenteeism-anomaly-detection",
   "sector": "Care",
   "tags": ["anomaly-detection", "decision-making", "machine-learning"]

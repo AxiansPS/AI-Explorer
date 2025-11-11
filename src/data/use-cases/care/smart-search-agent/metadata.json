@@ -1,5 +1,6 @@
 {
   "title": "Smart Search Agent",
+  "title_nl": "Slimme Zoekagent",
   "id": "care-dossier-agent-rag",
   "sector": "Care",
   "tags": ["information-retrieval"]

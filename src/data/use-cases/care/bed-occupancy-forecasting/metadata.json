@@ -1,5 +1,6 @@
 {
   "title": "Occupancy & Bed Capacity Forecasting",
+  "title_nl": "Bezettings- & Bedcapaciteit-voorspelling",
   "id": "care-occupancy-bed-forecasting",
   "sector": "Care",
   "tags": ["forecasting", "predict-plan", "machine-learning"]

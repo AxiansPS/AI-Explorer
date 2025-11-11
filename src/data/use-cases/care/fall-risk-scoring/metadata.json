@@ -1,5 +1,6 @@
 {
   "title": "Fall Risk Scoring & Prevention",
+  "title_nl": "Valrisicoscore & Preventie",
   "id": "care-fall-risk-scoring",
   "sector": "Care",
   "tags": ["scoring-prioritization", "decision-making", "machine-learning"]

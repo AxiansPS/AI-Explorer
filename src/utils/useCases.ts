@@ -1,6 +1,7 @@
 export interface UseCaseMetadata {
   id: string;
   title: string;
+  title_nl?: string;
   company: string;
   sector: string;
   tags: string[];

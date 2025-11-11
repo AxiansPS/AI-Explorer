@@ -1,6 +1,7 @@
 {
   "id": "sentiment-analysis",
   "title": "Sentiment Analysis for Strategic Insights",
+  "title_nl": "Sentimentanalyse voor Strategische Inzichten",
   "sector": "Industry",
   "tags": ["text-classification"]
 }

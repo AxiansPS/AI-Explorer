@@ -1,6 +1,7 @@
 {
   "id": "automated-quality-inspection",
   "title": "Automated Quality Inspection",
+  "title_nl": "Geautomatiseerde Kwaliteitsinspectie",
   "sector": "Industry",
   "tags": ["detect"]
 }

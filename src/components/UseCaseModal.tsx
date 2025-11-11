@@ -13,6 +13,7 @@ interface UseCaseModalProps {
 export const UseCaseModal: React.FC<UseCaseModalProps> = ({ useCase, imageSrc, onClose, language = 'en' }) => {
   // Get language-specific content
   const content = getUseCaseContent(useCase, language);
+  const displayTitle = language === 'nl' && useCase.metadata.title_nl ? useCase.metadata.title_nl : useCase.metadata.title;
   
   // Remove the first H1 title and any horizontal rules from content
   const contentWithoutTitle = content
@@ -67,7 +68,7 @@ export const UseCaseModal: React.FC<UseCaseModalProps> = ({ useCase, imageSrc, o
         <div className="relative h-64 overflow-hidden rounded-t-xl">
           <img 
             src={imageSrc} 
-            alt={useCase.metadata.title}
+            alt={displayTitle}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
@@ -75,7 +76,7 @@ export const UseCaseModal: React.FC<UseCaseModalProps> = ({ useCase, imageSrc, o
 
         {/* Content */}
         <div className="p-8">
-          <h2 className="text-3xl font-bold mb-6 text-white">{useCase.metadata.title}</h2>
+          <h2 className="text-3xl font-bold mb-6 text-white">{displayTitle}</h2>
           
           <div className="max-w-none">
             <div 

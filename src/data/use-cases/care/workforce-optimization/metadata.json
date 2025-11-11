@@ -1,5 +1,6 @@
 {
   "title": "Workforce Demand–Supply Optimization (PIL/PNIL)",
+  "title_nl": "Optimalisatie Vraag–Aanbod Personeel (PIL/PNIL)",
   "id": "care-workforce-optimization",
   "sector": "Care",
   "tags": ["planning-optimization", "optimize", "machine-learning"]

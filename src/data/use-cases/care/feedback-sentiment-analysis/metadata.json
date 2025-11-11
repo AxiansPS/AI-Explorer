@@ -1,5 +1,6 @@
 {
   "title": "Sentiment Analysis for Patient & Caregiver Feedback",
+  "title_nl": "Sentimentanalyse van Patiënt- & Mantelzorgerfeedback",
   "id": "care-sentiment-analysis-feedback",
   "sector": "Care",
   "tags": ["text-analysis"]

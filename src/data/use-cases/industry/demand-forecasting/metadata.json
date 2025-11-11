@@ -1,6 +1,7 @@
 {
   "id": "demand-forecasting",
   "title": "Demand Forecasting",
+  "title_nl": "Vraagvoorspelling",
   "sector": "Industry",
   "tags": ["predict"]
 }

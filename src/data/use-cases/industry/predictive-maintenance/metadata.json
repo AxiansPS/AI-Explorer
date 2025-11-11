@@ -1,6 +1,7 @@
 {
   "id": "predictive-maintenance",
   "title": "Predictive Maintenance",
+  "title_nl": "Voorspellend Onderhoud",
   "sector": "Industry",
   "tags": ["predict"]
 }

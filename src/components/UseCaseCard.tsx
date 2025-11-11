@@ -10,6 +10,7 @@ interface UseCaseCardProps {
 }
 
 export const UseCaseCard: React.FC<UseCaseCardProps> = ({ useCase, imageSrc, onClick, language = 'en' }) => {
+  const displayTitle = language === 'nl' && useCase.metadata.title_nl ? useCase.metadata.title_nl : useCase.metadata.title;
   return (
     <div 
       onClick={onClick}
@@ -19,7 +20,7 @@ export const UseCaseCard: React.FC<UseCaseCardProps> = ({ useCase, imageSrc, onC
       <div className="relative h-48 overflow-hidden">
         <img 
           src={imageSrc} 
-          alt={useCase.metadata.title}
+          alt={displayTitle}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
@@ -28,7 +29,7 @@ export const UseCaseCard: React.FC<UseCaseCardProps> = ({ useCase, imageSrc, onC
       {/* Content */}
       <div className="p-6">
         <h4 className="text-xl font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors">
-          {useCase.metadata.title}
+          {displayTitle}
         </h4>
         
         {/* Read More */}
