@@ -250,3 +250,13 @@ All colors MUST be HSL.
     transition-delay: 0.3s;
   }
 }
+
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

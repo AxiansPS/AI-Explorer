@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Home, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import { ChevronDown, ArrowLeft } from 'lucide-react';
 import { TreeNodeData, NodePosition } from '../types/treeTypes';
 import { CircleNode } from './CircleNode';
 import { Tooltip } from './Tooltip';
 import { Breadcrumb } from './Breadcrumb';
 import { DetailCard } from './DetailCard';
+import logoUrl from '../assets/Axians_Logo_RGB.svg';
+import { Button } from './ui/button';
 
 interface NavigationViewProps {
   currentNode: TreeNodeData;
@@ -16,6 +18,7 @@ interface NavigationViewProps {
   isBusinessMode?: boolean;
   businessFocus?: 'care' | 'industry';
   language?: 'en' | 'nl';
+  settingsMenu?: ReactNode;
 }
 
 export const NavigationView: React.FC<NavigationViewProps> = ({
@@ -27,7 +30,8 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
   onHome,
   isBusinessMode,
   businessFocus, // Add businessFocus prop
-  language
+  language,
+  settingsMenu
 }) => {
   const [hoveredNode, setHoveredNode] = useState<TreeNodeData | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -175,15 +179,58 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
 
   const { positions, nodeSize: childNodeSize } = calculateNodePositions();
   const parentNodeSize = Math.min(containerSize.width, containerSize.height) * 0.6;
+  const hasBackPath = path.length > 1;
 
   return (
     <div 
       ref={containerRef}
-      className="relative bg-gradient-to-br from-gray-900 via-black to-gray-800 w-full overflow-y-auto" 
+      className="relative bg-gradient-to-br from-gray-900 via-black to-gray-800 w-full overflow-y-auto scrollbar-hide pt-24" 
       style={{ height: '100vh' }}
     >
+      {/* Top Header with Logo, Breadcrumb and Title */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10">
+        <div className="relative max-w-7xl mx-auto px-4 py-3 md:py-4">
+          <div className="flex items-center justify-between gap-6">
+            <div className="flex flex-col items-start gap-2 min-w-[180px] self-start">
+              {onHome ? (
+                <button onClick={onHome} aria-label="Go to homepage" className="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-sm">
+                  <img src={logoUrl} alt="Company logo" className="h-8 md:h-9 object-contain" />
+                </button>
+              ) : (
+                <img src={logoUrl} alt="Company logo" className="h-8 md:h-9 object-contain shrink-0" />
+              )}
+              <Breadcrumb path={path} onNavigate={onNavigate} onBack={onBack} inline className="w-full" showBackButton={false} />
+            </div>
+
+            <div className="flex items-center justify-end min-w-[48px] self-center">
+              {settingsMenu}
+            </div>
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <h1 className="text-white text-lg md:text-2xl font-bold pointer-events-auto text-center px-8 truncate">
+              {currentNode.name}
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      {hasBackPath && (
+        <div className="max-w-7xl mx-auto px-4 mt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onBack}
+            className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/5 border-white/20"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+        </div>
+      )}
+
       {/* Radial Color Highlights */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
         <div className="absolute inset-0" style={{
           backgroundImage: `
             radial-gradient(circle at 25% 25%, rgb(0, 255, 255) 0%, transparent 50%),
@@ -195,23 +242,7 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
       
       {/* Node Visualization Section */}
       <div className="relative flex-shrink-0" style={{ height: `${containerSize.height}px` }}>
-        <Breadcrumb path={path} onNavigate={onNavigate} onBack={onBack} />
         
-        {/* Home button */}
-        {onHome && (
-          <button
-            onClick={onHome}
-            className="absolute top-4 left-4 z-50 bg-white/10 hover:bg-white/20 text-white p-2 rounded-full transition-colors"
-            aria-label="Go to homepage"
-          >
-            <Home size={20} />
-          </button>
-        )}
-        
-        {/* Title centered at top */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50">
-          <h1 className="text-2xl font-bold text-white">{currentNode.name}</h1>
-        </div>
         
         {/* Parent node (current level) - transparent and unclickable */}
         <div className="z-10 pointer-events-none">
