@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, ReactNode } from 'react';
-import { ChevronDown, ArrowLeft } from 'lucide-react';
+import { ChevronDown, ArrowLeft, Mail, Phone, ChevronUp, MessageCircle } from 'lucide-react';
 import { TreeNodeData, NodePosition } from '../types/treeTypes';
 import { CircleNode } from './CircleNode';
 import { Tooltip } from './Tooltip';
@@ -46,6 +46,8 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
   const detailSectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollOpacity, setScrollOpacity] = useState(1);
+  const [showContacts, setShowContacts] = useState(false);
+  const contactCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateSize = () => {
@@ -112,6 +114,26 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
 
     return () => observer.disconnect();
   }, [currentNode, containerSize.height]);
+
+  useEffect(() => {
+    if (!showContacts) return;
+  
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowContacts(false);
+    };
+    const onClick = (e: MouseEvent) => {
+      if (!contactCardRef.current) return;
+      if (!contactCardRef.current.contains(e.target as Node)) {
+        setShowContacts(false);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onClick);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onClick);
+    };
+  }, [showContacts]);
 
   const calculateNodePositions = (): { positions: NodePosition[], nodeSize: number, center: { x: number, y: number }, effectiveHeight: number } => {
     const fullHeight = containerSize.height || window.innerHeight || HEADER_HEIGHT * 2;
@@ -419,6 +441,120 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
           </div>
         </div>
       )}
+      
+      {/* --- Floating Contact Button (bottom-left) + Popover --- */}
+      <div className="fixed left-4 md:left-6 bottom-4 md:bottom-6 z-40 pointer-events-none">
+        <div className="relative pointer-events-auto" ref={contactCardRef}>
+          {/* Standalone glass button */}
+          <button
+            type="button"
+            onClick={() => setShowContacts((v) => !v)}
+            className="
+              group inline-flex items-center gap-2
+              rounded-full border border-white/10 bg-white/5 backdrop-blur-md
+              text-white/90 hover:text-white
+              shadow-md shadow-black/30 hover:shadow-cyan-500/20
+              px-4 py-2 md:px-5 md:py-2.5
+              transition-colors
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60
+            "
+            aria-expanded={showContacts}
+            aria-controls="more-contacts"
+            aria-label="Open contact information"
+            title="Contact"
+          >
+            <MessageCircle className="w-4 h-4 text-cyan-300 transition-colors group-hover:text-cyan-200" />
+            <span className="text-sm font-medium">
+              Questions about AI &amp; development?
+            </span>
+            {showContacts ? (
+              <ChevronUp className="w-4 h-4 text-cyan-300" />
+            ) : (
+              <ChevronDown className="w-4 h-4 text-cyan-300" />
+            )}
+          </button>
+
+          {/* Popover (floating) */}
+          {showContacts && (
+            <div
+              id="more-contacts"
+              role="dialog"
+              aria-label="Contact information"
+              className="
+                absolute left-0 bottom-[calc(100%+12px)]
+                w-[min(88vw,22rem)]
+                rounded-xl border border-white/10 bg-black/60 backdrop-blur-lg
+                shadow-xl shadow-black/50 text-white p-4
+                animate-in fade-in zoom-in-95 duration-150
+              "
+              style={{ transformOrigin: 'left bottom' }}
+            >
+              <div className="text-sm font-semibold text-cyan-300 mb-2">
+                Contact
+              </div>
+
+              <div className="space-y-4 text-sm">
+                {/* Teun */}
+                <div>
+                  <div className="font-medium">Teun van de Laar</div>
+                  <div className="text-xs text-white/60">AI, Data &amp; Analytics Consultant</div>
+                  <div className="mt-1.5 space-y-1">
+                    <a
+                      href="mailto:teun.vandelaar@axians.com"
+                      className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+                    >
+                      <Mail className="w-4 h-4" />
+                      teun.vandelaar@axians.com
+                    </a>
+                    <a
+                      href="tel:+31612345678"
+                      className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+                    >
+                      <Phone className="w-4 h-4" />
+                      +31 6 25 54 39 71
+                    </a>
+                  </div>
+                </div>
+
+                <div className="h-px bg-white/10" />
+
+                {/* Jordy */}
+                <div>
+                  <div className="font-medium">Jordy Ravesteijn</div>
+                  <div className="text-xs text-white/60">Business Development Manager AI, Data &amp; Analytics</div>
+                  <div className="mt-1.5 space-y-1">
+                    <a
+                      href="mailto:jordy.ravesteijn@axians.com"
+                      className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+                    >
+                      <Mail className="w-4 h-4" />
+                      jordy.ravesteijn@axians.com
+                    </a>
+                    <a
+                      href="tel:+31600000000"
+                      className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+                    >
+                      <Phone className="w-4 h-4" />
+                      +31 6 25 57 88 67
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Optional small caret pointing to the button */}
+              <div
+                className="
+                  absolute left-4 -bottom-1.5 h-3 w-3
+                  bg-black/60 backdrop-blur-lg
+                  border-l border-t border-white/10
+                  rotate-45
+                "
+                aria-hidden="true"
+              />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
