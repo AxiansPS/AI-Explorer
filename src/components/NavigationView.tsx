@@ -8,6 +8,8 @@ import { DetailCard } from './DetailCard';
 import logoUrl from '../assets/Axians_Logo_RGB.svg';
 import { Button } from './ui/button';
 
+const HEADER_HEIGHT = 96; // px, aligns with header padding
+
 interface NavigationViewProps {
   currentNode: TreeNodeData;
   path: TreeNodeData[];
@@ -40,8 +42,10 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
   const [animatingNodePosition, setAnimatingNodePosition] = useState<NodePosition | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showDetailCards, setShowDetailCards] = useState(false);
+  const [detailHeight, setDetailHeight] = useState(0);
   const detailSectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollOpacity, setScrollOpacity] = useState(1);
 
   useEffect(() => {
     const updateSize = () => {
@@ -72,12 +76,12 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
         const detailRect = detailSectionRef.current.getBoundingClientRect();
         const isVisible = detailRect.top <= containerRect.top + containerRect.height * 0.8;
         setShowDetailCards(isVisible);
-        console.log('Scroll check:', { 
-          detailTop: detailRect.top, 
-          containerTop: containerRect.top, 
-          containerHeight: containerRect.height, 
-          isVisible 
-        });
+        
+        const scrollTop = containerRef.current.scrollTop;
+        const fadeStart = 50;   // start fading after 50px
+        const fadeEnd = 200;    // fully invisible after 200px
+        const opacity = Math.max(0, 1 - (scrollTop - fadeStart) / (fadeEnd - fadeStart));
+        setScrollOpacity(opacity);
       }
     };
 
@@ -90,17 +94,41 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
     }
   }, [currentNode]); // Re-run when currentNode changes
 
-  const calculateNodePositions = (): { positions: NodePosition[], nodeSize: number } => {
-    if (!currentNode.children || currentNode.children.length === 0) return { positions: [], nodeSize: 80 };
+  useEffect(() => {
+    if (typeof ResizeObserver === 'undefined' || !detailSectionRef.current) {
+      setDetailHeight(detailSectionRef.current?.offsetHeight || 0);
+      return;
+    }
 
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.contentRect) {
+          setDetailHeight(entry.contentRect.height);
+        }
+      }
+    });
+
+    observer.observe(detailSectionRef.current);
+
+    return () => observer.disconnect();
+  }, [currentNode, containerSize.height]);
+
+  const calculateNodePositions = (): { positions: NodePosition[], nodeSize: number, center: { x: number, y: number }, effectiveHeight: number } => {
+    const fullHeight = containerSize.height || window.innerHeight || HEADER_HEIGHT * 2;
     const centerX = containerSize.width / 2;
-    const centerY = containerSize.height / 2;
+    const effectiveHeight = Math.max(fullHeight - HEADER_HEIGHT, 1);
+    const centerY = effectiveHeight / 2;
+
+    if (!currentNode.children || currentNode.children.length === 0) {
+      return { positions: [], nodeSize: 80, center: { x: centerX, y: centerY }, effectiveHeight };
+    }
+
     const children = currentNode.children;
     const childCount = children.length;
 
     // Calculate optimal node size and spacing using geometric formula
     const availableWidth = containerSize.width * 0.8; // Use 80% of screen width
-    const availableHeight = containerSize.height * 0.7; // Use 70% of screen height
+    const availableHeight = effectiveHeight * 0.7; // Use 70% of effective height
     
     // Calculate node size based on available space
     let nodeSize: number;
@@ -113,7 +141,7 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
     } else {
       // Use geometric formula: r = R * sin(π/n) / (1+k)
       const F = 0.78;
-      const minDimension = Math.min(containerSize.width, containerSize.height);
+      const minDimension = Math.min(containerSize.width, effectiveHeight);
       const k = 1/3; // Ratio constant for spacing
       const n = childCount;
       
@@ -153,7 +181,7 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
       };
     });
 
-    return { positions, nodeSize };
+    return { positions, nodeSize, center: { x: centerX, y: centerY }, effectiveHeight };
   };
 
   const handleNodeClick = (node: TreeNodeData, position: NodePosition) => {
@@ -177,15 +205,15 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
     }
   };
 
-  const { positions, nodeSize: childNodeSize } = calculateNodePositions();
-  const parentNodeSize = Math.min(containerSize.width, containerSize.height) * 0.6;
+  const { positions, nodeSize: childNodeSize, center, effectiveHeight } = calculateNodePositions();
+  const parentNodeSize = Math.min(containerSize.width, effectiveHeight) * 0.6;
   const hasBackPath = path.length > 1;
 
   return (
     <div 
       ref={containerRef}
-      className="relative bg-gradient-to-br from-gray-900 via-black to-gray-800 w-full overflow-y-auto scrollbar-hide pt-24" 
-      style={{ height: '100vh' }}
+      className="relative w-full overflow-y-auto scrollbar-hide bg-gradient-to-br from-gray-900 via-black to-gray-800" 
+      style={{ height: '100vh', paddingTop: HEADER_HEIGHT }}
     >
       {/* Top Header with Logo, Breadcrumb and Title */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10">
@@ -216,21 +244,28 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
       </div>
 
       {hasBackPath && (
-        <div className="max-w-7xl mx-auto px-4 mt-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onBack}
-            className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/5 border-white/20"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Button>
+        <div className="max-w-7xl mx-auto px-4 relative">
+          {/* Take the button out of flow, but position it inside this wrapper so alignment is unchanged */}
+          <div className="absolute top-4 z-40 pointer-events-auto">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onBack}
+              className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/5 border-white/20"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+          </div>
         </div>
       )}
 
+
       {/* Radial Color Highlights */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
+      <div 
+        className="absolute left-0 right-0 top-0 opacity-10 pointer-events-none"
+        style={{ height: `${containerSize.height + detailHeight + HEADER_HEIGHT}px` }}
+      >
         <div className="absolute inset-0" style={{
           backgroundImage: `
             radial-gradient(circle at 25% 25%, rgb(0, 255, 255) 0%, transparent 50%),
@@ -249,8 +284,8 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
           <CircleNode
             node={currentNode}
             position={{
-              x: containerSize.width / 2,
-              y: containerSize.height / 2,
+              x: center.x,
+              y: center.y,
               angle: 0,
               radius: 0
             }}
@@ -300,8 +335,8 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
               style={{
                 '--start-x': `${animatingNodePosition.x}px`,
                 '--start-y': `${animatingNodePosition.y}px`,
-                '--center-x': `${containerSize.width / 2}px`,
-                '--center-y': `${containerSize.height / 2}px`
+              '--center-x': `${center.x}px`,
+              '--center-y': `${center.y}px`
               } as React.CSSProperties}
               isBusinessMode={isBusinessMode}
               businessFocus={businessFocus} // Pass businessFocus prop
@@ -315,12 +350,16 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
 
         {/* Scroll Indicator - Positioned at bottom of node visualization */}
         {currentNode.children && currentNode.children.length > 0 && (
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50">
-            <div className="inline-flex items-center gap-2 text-cyan-400 text-lg font-medium">
-              <ChevronDown className="w-5 h-5 animate-bounce" />
-              <span>{language === 'nl' ? 'Scroll om details te verkennen' : 'Scroll down to explore detailed information'}</span>
-              <ChevronDown className="w-5 h-5 animate-bounce" />
-            </div>
+            <div
+              className="absolute z-50 flex items-center gap-2 text-cyan-400 text-sm md:text-base font-medium transition-opacity duration-100"
+              style={{ bottom: HEADER_HEIGHT + 24, right: 32, opacity: scrollOpacity }}
+            >
+            <ChevronDown className="w-5 h-5 animate-bounce" />
+            <span className="text-right">
+              {language === 'nl'
+                ? 'Scroll om details te verkennen'
+                : 'Scroll down to explore detailed information'}
+            </span>
           </div>
         )}
       </div>
@@ -329,10 +368,8 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
       {currentNode.children && currentNode.children.length > 0 && (
         <div 
           ref={detailSectionRef}
-          className="relative z-10 min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800"
-          style={{ 
-            width: '100%'
-          }}
+          className="relative z-10 min-h-screen"
+          style={{ width: '100%' }}
         >
           <div className="max-w-6xl mx-auto p-6">
 
