@@ -65,11 +65,13 @@ export const UseCaseModal: React.FC<UseCaseModalProps> = ({ useCase, imageSrc, o
         </Button>
 
         {/* Hero Image */}
-        <div className="relative h-64 overflow-hidden rounded-t-xl">
+        <div className="relative h-72 md:h-80 overflow-hidden rounded-t-xl">
           <img 
             src={imageSrc} 
             alt={displayTitle}
+            style={{ objectPosition: 'center 30%' }}
             className="w-full h-full object-cover"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
         </div>

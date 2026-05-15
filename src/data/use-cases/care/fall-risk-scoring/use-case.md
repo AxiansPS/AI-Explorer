@@ -79,9 +79,3 @@ Number of falls per 1,000 care days, % of high-risk patients with prevention pla
 - Broader **incident risk** (aggression, wandering).
 - Real-time alerts via sensors (domotics).
 - Link with **staff planning** for extra supervision.
-
----
-
-## AI Explorer taxonomy mapping
-- Primary category: **Scoring & Prioritization**  
-  - Tags: `scoring-prioritization`, `decision-making`, `machine-learning`

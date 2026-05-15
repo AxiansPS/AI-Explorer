@@ -78,9 +78,3 @@ Analyze **free-text feedback** from patients, family members, and caregivers to 
 - **Emotion detection** for victim support or mental health triage.
 - **Real-time monitoring** of chat channels for escalation.
 - **Combine with summarization** for executive reporting.
-
----
-
-## AI Explorer taxonomy mapping
-- Primary category: **Text Analysis**  
-  - Tags: `sentiment-analysis`, `text-analysis`, `NLP`

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TreeNodeData } from '../types/treeTypes';
 import { CircleNode } from './CircleNode';
+import logoUrl from '../assets/Axians_Logo_RGB.svg';
+
 
 interface HomepageProps {
   rootNode: TreeNodeData;
@@ -36,6 +38,14 @@ export const Homepage: React.FC<HomepageProps> = ({ rootNode, onEnterTaxonomy, i
           `
         }}>
         </div>
+      </div>
+      {/* Top left logo */}
+      <div className="absolute top-6 left-6 z-20">
+        <img
+          src={logoUrl}
+          alt="Axians logo"
+          className="h-10 object-contain"
+        />
       </div>
 
       {/* Top centered content */}

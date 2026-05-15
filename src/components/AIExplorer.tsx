@@ -8,6 +8,7 @@ import { NavigationView } from './NavigationView';
 import { DetailPage } from './DetailPage';
 import { Switch } from './ui/switch';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Tooltip, TooltipTrigger, TooltipContent } from './ui/tooltip';
 import { Button } from './ui/button';
 import { Code, Briefcase, Stethoscope, Factory, Languages, Menu } from 'lucide-react';
 
@@ -17,7 +18,8 @@ export const AIExplorer: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('homepage');
   const [currentPath, setCurrentPath] = useState<TreeNodeData[]>([aiTaxonomyData]);
   const [detailNode, setDetailNode] = useState<TreeNodeData | null>(null);
-  const [isBusinessMode, setIsBusinessMode] = useState<boolean>(false);
+  // Default to business mode unless explicitly set in localStorage
+  const [isBusinessMode, setIsBusinessMode] = useState<boolean>(true);
   const [businessFocus, setBusinessFocus] = useState<'care' | 'industry'>('care'); // New state for business focus
   const [currentLanguage, setCurrentLanguage] = useState<'en' | 'nl'>('en'); // New state for language
 
@@ -61,6 +63,11 @@ export const AIExplorer: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('currentLanguage', currentLanguage);
   }, [currentLanguage]);
+
+  // Ensure the taxonomy data matches the selected view mode and language
+  useEffect(() => {
+    setCurrentPath([isBusinessMode ? getBusinessData() : aiTaxonomyData]);
+  }, [isBusinessMode, currentLanguage]);
 
   const currentNode = currentPath[currentPath.length - 1];
 
@@ -160,11 +167,21 @@ export const AIExplorer: React.FC = () => {
           {/* Settings Menu */}
           <div className="fixed top-6 right-6 z-50">
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" className="bg-background/80 backdrop-blur-sm">
-                  <Menu className="w-4 h-4" />
-                </Button>
-              </PopoverTrigger>
+              <Tooltip open={true}>
+                <TooltipTrigger asChild>
+                  <div>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" size="sm" className="bg-background/80 backdrop-blur-sm" title={currentLanguage === 'nl' ? 'Probeer de technische weergave of wissel branche/taal' : 'Try the Technical view or switch business focus / language'}>
+                        <Menu className="w-4 h-4" />
+                      </Button>
+                    </PopoverTrigger>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="left">
+                  {currentLanguage === 'nl' ? 'Probeer de technische weergave of wissel branche/taal' : 'Try the Technical view or switch business focus / language'}
+                </TooltipContent>
+              </Tooltip>
+
               <PopoverContent className="w-64 p-4">
                 <div className="space-y-4">
                   {/* Language Switcher */}

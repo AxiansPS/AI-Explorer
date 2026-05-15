@@ -78,9 +78,3 @@ Absenteeism rate (%), average duration of absence, anomaly detection precision/r
 - Predictive absenteeism risk scoring (combine with forecasting).
 - Link to **workforce optimization** for proactive scheduling.
 - Integrate with **employee well-being programs**.
-
----
-
-## AI Explorer taxonomy mapping
-- Primary category: **Anomaly Detection**  
-  - Tags: `anomaly-detection`, `decision-making`, `machine-learning`

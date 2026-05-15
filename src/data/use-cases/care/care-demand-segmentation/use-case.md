@@ -90,9 +90,3 @@ Variance (σ²) of workload minutes per client within cohorts (↓), forecast ac
 - **Dynamic cohorting**: allow clients to move cohorts as needs change.
 - **Segmentation + scoring**: combine with **risk scores** (e.g., falls) for prioritization inside a cohort.
 - **Regional planning**: roll up cohort demand to municipality/region for capacity agreements.
-
----
-
-## AI Explorer taxonomy mapping
-- Primary category: **Segmentation**  
-  - Tags: `segmentation`, `decision-making`, `machine-learning`

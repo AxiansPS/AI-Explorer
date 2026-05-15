@@ -6,6 +6,8 @@ import { Tooltip } from './Tooltip';
 import { Breadcrumb } from './Breadcrumb';
 import { DetailCard } from './DetailCard';
 import logoUrl from '../assets/Axians_Logo_RGB.svg';
+const teunPortrait = new URL('../assets/portrait_Teun.JPG', import.meta.url).href;
+const jordyPortrait = new URL('../assets/Portrait_Jordy.png', import.meta.url).href;
 import { Button } from './ui/button';
 
 const HEADER_HEIGHT = 96; // px, aligns with header padding
@@ -373,16 +375,19 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
         {/* Scroll Indicator - Positioned at bottom of node visualization */}
         {currentNode.children && currentNode.children.length > 0 && (
             <div
-              className="absolute z-50 flex items-center gap-2 text-cyan-400 text-sm md:text-base font-medium transition-opacity duration-100"
-              style={{ bottom: HEADER_HEIGHT + 24, right: 32, opacity: scrollOpacity }}
+              className="absolute z-50 flex flex-col items-center gap-2 text-cyan-400 text-sm md:text-base font-medium transition-opacity duration-200"
+              style={{ bottom: HEADER_HEIGHT + 24, left: '50%', transform: 'translateX(-50%)', opacity: scrollOpacity }}
             >
-            <ChevronDown className="w-5 h-5 animate-bounce" />
-            <span className="text-right">
-              {language === 'nl'
-                ? 'Scroll om details te verkennen'
-                : 'Scroll down to explore detailed information'}
-            </span>
-          </div>
+              <div className="relative flex items-center justify-center">
+                <span className="absolute block w-8 h-8 rounded-full bg-cyan-400/8 animate-ping" aria-hidden="true" />
+                <ChevronDown className="w-6 h-6 animate-bounce-strong text-cyan-400 drop-shadow-[0_8px_24px_rgba(0,255,255,0.12)]" />
+              </div>
+              <span className="text-center hint-pulse">
+                {language === 'nl'
+                  ? 'Scroll om details te verkennen'
+                  : 'Scroll down to explore detailed information'}
+              </span>
+            </div>
         )}
       </div>
 
@@ -495,48 +500,54 @@ export const NavigationView: React.FC<NavigationViewProps> = ({
 
               <div className="space-y-4 text-sm">
                 {/* Teun */}
-                <div>
-                  <div className="font-medium">Teun van de Laar</div>
-                  <div className="text-xs text-white/60">AI, Data &amp; Analytics Consultant</div>
-                  <div className="mt-1.5 space-y-1">
-                    <a
-                      href="mailto:teun.vandelaar@axians.com"
-                      className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
-                    >
-                      <Mail className="w-4 h-4" />
-                      teun.vandelaar@axians.com
-                    </a>
-                    <a
-                      href="tel:+31612345678"
-                      className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
-                    >
-                      <Phone className="w-4 h-4" />
-                      +31 6 25 54 39 71
-                    </a>
+                <div className="flex items-center gap-3">
+                  <img src={teunPortrait} alt="Teun van de Laar" className="w-16 h-16 rounded-full object-cover border border-white/10" />
+                  <div>
+                    <div className="font-medium">Teun van de Laar</div>
+                    <div className="text-xs text-white/60">AI, Data &amp; Analytics Consultant</div>
+                    <div className="mt-1.5 space-y-1">
+                      <a
+                        href="mailto:teun.vandelaar@axians.com"
+                        className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+                      >
+                        <Mail className="w-4 h-4" />
+                        teun.vandelaar@axians.com
+                      </a>
+                      <a
+                        href="tel:+31612345678"
+                        className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+                      >
+                        <Phone className="w-4 h-4" />
+                        +31 6 25 54 39 71
+                      </a>
+                    </div>
                   </div>
                 </div>
 
                 <div className="h-px bg-white/10" />
 
                 {/* Jordy */}
-                <div>
-                  <div className="font-medium">Jordy Ravesteijn</div>
-                  <div className="text-xs text-white/60">Business Development Manager AI, Data &amp; Analytics</div>
-                  <div className="mt-1.5 space-y-1">
-                    <a
-                      href="mailto:jordy.ravesteijn@axians.com"
-                      className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
-                    >
-                      <Mail className="w-4 h-4" />
-                      jordy.ravesteijn@axians.com
-                    </a>
-                    <a
-                      href="tel:+31600000000"
-                      className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
-                    >
-                      <Phone className="w-4 h-4" />
-                      +31 6 25 57 88 67
-                    </a>
+                <div className="flex items-center gap-3">
+                  <img src={jordyPortrait} alt="Jordy Ravesteijn" className="w-16 h-16 rounded-full object-cover border border-white/10" />
+                  <div>
+                    <div className="font-medium">Jordy Ravesteijn</div>
+                    <div className="text-xs text-white/60">Business Development Manager AI, Data &amp; Analytics</div>
+                    <div className="mt-1.5 space-y-1">
+                      <a
+                        href="mailto:jordy.ravesteijn@axians.com"
+                        className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+                      >
+                        <Mail className="w-4 h-4" />
+                        jordy.ravesteijn@axians.com
+                      </a>
+                      <a
+                        href="tel:+31600000000"
+                        className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline underline-offset-2"
+                      >
+                        <Phone className="w-4 h-4" />
+                        +31 6 25 57 88 67
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -17,11 +17,13 @@ export const UseCaseCard: React.FC<UseCaseCardProps> = ({ useCase, imageSrc, onC
       className="group relative overflow-hidden rounded-xl border border-cyan-500/30 bg-gray-800/50 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:border-cyan-400/60 hover:scale-[1.02] hover:shadow-xl hover:shadow-cyan-500/20"
     >
       {/* Image */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-56 md:h-64 overflow-hidden">
         <img 
           src={imageSrc} 
           alt={displayTitle}
+          style={{ objectPosition: 'center 30%' }}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
       </div>

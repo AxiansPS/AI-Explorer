@@ -11,7 +11,8 @@ import maintenanceLogAnalytics from'../assets/use-cases/maintenance-log-analytic
 import ovenTemperatureOptimization from'../assets/use-cases/oven-temperature-optimization.jpg';
 import predictiveMaintenance from'../assets/use-cases/predictive-maintenance.png';
 import productionProcessAutomation from'../assets/use-cases/production-process-automation.jpg';
-import smartWebsiteSearchAgent from '../assets/use-cases/smart-website-search-agent.jpg';
+import careSmartSearchAgent from '../assets/use-cases/care-smart-search-agent.jpg';
+import smartWebsiteSearchAgent from '../assets/use-cases/industry-smart-website-search.png';
 import routePlanningOrderPickers from '../assets/use-cases/route-planning-order-pickers.png';
 import sentimentAnalysisIndustry from '../assets/use-cases/sentiment-analysis-industry.png';
 import bedOccupancyForecasting from '../assets/use-cases/bed-occupancy-forecasting.jpg';
@@ -39,6 +40,7 @@ const USE_CASE_IMAGES: Record<string, string> = {
   'oven-temperature-optimization': ovenTemperatureOptimization,
   'predictive-maintenance': predictiveMaintenance,
   'production-process-optimization': productionProcessAutomation,
+  'care-smart-search-agent': careSmartSearchAgent,
   'smart-website-search-agent': smartWebsiteSearchAgent,
   'route-planning-order-pickers': routePlanningOrderPickers,
   'sentiment-analysis': sentimentAnalysisIndustry,
@@ -47,7 +49,7 @@ const USE_CASE_IMAGES: Record<string, string> = {
   'care-demand-segmentation': careDemandSegmentation,
   'care-fall-risk-scoring': fallRiskScoring,
   'care-sentiment-analysis-feedback': sentimentAnalysisCare,
-  'care-dossier-agent-rag': smartWebsiteSearchAgent,
+  'care-dossier-agent-rag': careSmartSearchAgent,
   'care-smart-triage-assistant': smartTriageAssistant,
   'care-workforce-optimization': workforceOptimization,
 };

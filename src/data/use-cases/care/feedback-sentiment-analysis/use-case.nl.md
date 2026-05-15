@@ -78,9 +78,3 @@ Analyseer **vrije tekstfeedback** van patiënten, familieleden en mantelzorgers 
 - **Emotiedetectie** voor slachtofferhulp of triage in GGZ.  
 - **Real-time monitoring** van chatkanalen voor escalatie.  
 - **Combinatie met samenvatting** voor rapportage aan bestuur.  
-
----
-
-## AI Explorer taxonomie mapping
-- Primaire categorie: **Tekstanalyse**  
-  - Tags: `sentiment-analysis`, `text-analysis`, `NLP`

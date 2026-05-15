@@ -81,9 +81,3 @@ Coverage %, PNIL spend vs. baseline, # last‑minute changes, overtime hours, ru
 - Add **fairness constraints** (equal weekend shifts).
 - Integrate with **leave planning** and **training schedules**.
 - Combine with **route optimization** for home care.
-
----
-
-## AI Explorer taxonomy mapping
-- Primary category: **Planning optimization**  
-  - Tags: `planning-optimization`, `optimize`, `machine-learning`
